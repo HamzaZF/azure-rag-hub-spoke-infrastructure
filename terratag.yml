@@ -1,0 +1,11 @@
+tags:
+  environment: dev
+  owner: kelix-team
+  product: kelix
+  project: kelix-terraform
+  region: ueast2
+  created_by: hamza.zarfaoui@meinhardtgroup.com
+  managed_by: terraform
+  role: ${ROLE}
+  lifecycle: development
+  business_unit: engineering

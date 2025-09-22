@@ -1,0 +1,121 @@
+# Local .terraform directories
+.terraform/
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sensitive data, such as
+# password, private keys, and other secrets. These should not be part of version 
+# control as they are data points which are potentially sensitive and subject 
+# to change depending on the environment.
+*.tfvars
+*.tfvars.json
+
+# But include the main config file (contains non-sensitive configuration)
+# !configuration/terraform/config.tfvars
+
+# Explicitly ignore secrets files
+secrets.tfvars
+secrets.tfvars.json
+*secrets*.tfvars
+*secrets*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore transient lock info files created by terraform apply
+.terraform.tfstate.lock.info
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# example: *tfplan*
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# =============================================================================
+# TEST CONTAINERS SPECIFIC
+# =============================================================================
+
+# Node.js dependencies and build artifacts
+test-containers/**/node_modules/
+test-containers/**/npm-debug.log*
+test-containers/**/yarn-debug.log*
+test-containers/**/yarn-error.log*
+test-containers/**/package-lock.json.backup
+
+# Environment and configuration files
+test-containers/**/.env
+test-containers/**/.env.local
+test-containers/**/.env.production
+test-containers/**/config.env
+test-containers/**/*.local.json
+test-containers/**/*.local.yml
+
+# Build and runtime artifacts
+test-containers/**/dist/
+test-containers/**/build/
+test-containers/**/coverage/
+test-containers/**/tmp/
+test-containers/**/temp/
+
+# Logs and debug files
+test-containers/**/logs/
+test-containers/**/*.log
+test-containers/**/*.pid
+test-containers/**/*.seed
+test-containers/**/*.pid.lock
+
+# Test results and API response files
+test-containers/**/api-info.json
+test-containers/**/blob-test.json
+test-containers/**/postgres-test.json
+test-containers/**/openai-test.json
+test-containers/**/search-test.json
+test-containers/**/acr-test.json
+test-containers/**/test-results/
+test-containers/**/curl-format.txt
+
+# Docker override files
+test-containers/**/docker-compose.override.yml
+test-containers/**/.dockerignore.backup
+test-containers/**/Dockerfile.backup
+
+# Local development scripts
+test-containers/**/test-local.bat
+test-containers/**/test-local.sh
+test-containers/**/debug.bat
+test-containers/**/debug.sh
+
+# IDE and editor files
+test-containers/**/.vscode/
+test-containers/**/.idea/
+test-containers/**/*.swp
+test-containers/**/*.swo
+test-containers/**/*~
+
+# OS generated files
+test-containers/**/.DS_Store
+test-containers/**/.DS_Store?
+test-containers/**/._*
+test-containers/**/.Spotlight-V100
+test-containers/**/.Trashes
+test-containers/**/ehthumbs.db
+test-containers/**/Thumbs.db
+test-containers/**/*.lnk
+
+# Ignore SSL certificate files
+ssl/privkey.pem
+# ssl_certs/

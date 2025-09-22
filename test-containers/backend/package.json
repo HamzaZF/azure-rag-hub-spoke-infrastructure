@@ -1,0 +1,26 @@
+{
+    "name": "azure-managed-identity-test",
+    "version": "1.0.0",
+    "description": "Test Azure services access with managed identity",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node index.js"
+    },
+    "dependencies": {
+        "@azure/container-registry": "^1.1.0",
+        "@azure/identity": "^4.11.1",
+        "@azure/keyvault-secrets": "^4.8.0",
+        "@azure/search-documents": "^12.1.0",
+        "@azure/storage-blob": "^12.28.0",
+        "express": "^4.21.2",
+        "openai": "^4.71.0",
+        "pg": "^8.16.3"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

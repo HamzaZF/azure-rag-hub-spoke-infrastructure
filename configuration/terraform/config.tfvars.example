@@ -1,0 +1,367 @@
+################################################################################
+# Azure Terraform Configuration Template (tfvars)
+#
+# This file provides a template for ALL non-sensitive variables
+#
+# IMPORTANT: This file contains non-sensitive configuration values only.
+# Sensitive values (passwords, keys, tokens) are stored in secrets.tfvars
+#
+# USAGE:
+# 1. Copy this file to config.tfvars
+# 2. Update all placeholder values with your specific configuration
+# 3. Ensure secrets.tfvars is created separately with sensitive values
+################################################################################
+
+# -----------------------------------------------------------------------------
+# Global Configuration
+# -----------------------------------------------------------------------------
+
+# The Azure subscription ID where resources will be deployed
+subscription_id = "YOUR_AZURE_SUBSCRIPTION_ID"
+
+# Resource group name for monitoring resources
+monitoring_resource_group_name = "your-monitoring-rg"
+
+# -----------------------------------------------------------------------------
+# Naming Convention Configuration
+# -----------------------------------------------------------------------------
+
+# Company or organization name for resource naming
+naming_company = "your-company"
+
+# Product or application name for resource naming
+naming_product = "your-product"
+
+# Deployment environment (e.g., dev, staging, prod)
+naming_environment = "dev"
+
+# Azure region for resource naming (e.g., wus3, eus2, weu)
+naming_region = "wus3"
+
+# -----------------------------------------------------------------------------
+# Hub Core Network & Services
+# -----------------------------------------------------------------------------
+
+# The Azure region where hub resources will be deployed
+hub_location = "westus3"
+
+# List of address space CIDR blocks for the hub virtual network
+hub_vnet_address_space = ["10.0.0.0/16"]
+
+# Address prefix for the private endpoints subnet in the hub
+hub_pe_subnet_prefix = "10.0.0.0/24"
+
+# Address prefix for the VM subnet in the hub
+hub_vm_subnet_prefix = "10.0.1.0/24"
+
+# Address prefix for the Azure Firewall subnet in the hub
+hub_firewall_subnet_prefix = "10.0.2.0/24"
+
+# Address prefix for the agent VM subnet in the hub
+hub_agent_vm_subnet_prefix = "10.0.3.0/24"
+
+# -----------------------------------------------------------------------------
+# API Spoke Network Configuration
+# -----------------------------------------------------------------------------
+
+# The Azure region where API spoke resources will be deployed
+spoke_api_location = "westus3"
+
+# List of address space CIDR blocks for the API spoke virtual network
+spoke_api_vnet_address_space = ["10.1.0.0/16"]
+
+# Address prefix for the Application Gateway subnet in the API spoke
+spoke_api_ag_subnet_prefix = "10.1.0.0/24"
+
+# Address prefix for the web app integration subnet in the API spoke
+spoke_api_webapp_subnet_prefix = "10.1.1.0/24"
+
+# Address prefix for the private endpoints subnet in the API spoke
+spoke_api_pe_subnet_prefix = "10.1.2.0/24"
+
+# -----------------------------------------------------------------------------
+# AI Spoke Network Configuration
+# -----------------------------------------------------------------------------
+
+# The Azure region where AI spoke resources will be deployed
+spoke_ai_location = "westus3"
+
+# List of address space CIDR blocks for the AI spoke virtual network
+spoke_ai_vnet_address_space = ["10.2.0.0/16"]
+
+# Address prefix for the Container Apps subnet in the AI spoke
+spoke_ai_containerapp_subnet_prefix = "10.2.0.0/23"
+
+# Address prefix for the private endpoints subnet in the AI spoke
+spoke_ai_pe_subnet_prefix = "10.2.2.0/24"
+
+# Address prefix for the VM subnet in the AI spoke
+spoke_ai_vm_subnet_prefix = "10.2.3.0/24"
+
+# -----------------------------------------------------------------------------
+# VM Configuration
+# -----------------------------------------------------------------------------
+
+# Size of the hub VM (e.g., Standard_B2s, Standard_D2s_v3)
+hub_vm_size = "Standard_B2s"
+
+# Size of the hub agent VM
+hub_agent_vm_size = "Standard_B2s"
+
+# Size of the AI spoke VM
+spoke_ai_vm_size = "Standard_B2s"
+
+# Username for VM administrators
+vm_admin_username = "vmadmin"
+
+# Whether to enable public IP for hub VM (true/false)
+hub_vm_enable_public_ip = true
+
+# Whether to enable public IP for hub agent VM (true/false)
+hub_agent_vm_enable_public_ip = false
+
+# Whether to enable public IP for AI spoke VM (true/false)
+spoke_ai_vm_enable_public_ip = false
+
+# -----------------------------------------------------------------------------
+# Azure OpenAI Configuration
+# -----------------------------------------------------------------------------
+
+# Custom subdomain for Azure OpenAI (must be globally unique)
+hub_openai_custom_subdomain = "your-openai-subdomain"
+
+# SKU for Azure OpenAI service (S0 for standard)
+hub_openai_sku_name = "S0"
+
+# GPT-4.1 Mini model deployment configuration
+hub_openai_gpt4o_mini_deployment_name = "gpt-4o-mini"
+hub_openai_gpt4o_mini_model_name = "gpt-4o-mini"
+hub_openai_gpt4o_mini_model_version = "2024-07-18"
+hub_openai_gpt4o_mini_capacity = 50
+
+# Text embedding model deployment configuration
+hub_openai_text_embedding_deployment_name = "text-embedding-3-small"
+hub_openai_text_embedding_model_name = "text-embedding-3-small"
+hub_openai_text_embedding_model_version = "1"
+hub_openai_text_embedding_capacity = 50
+
+# -----------------------------------------------------------------------------
+# Azure AI Search Configuration
+# -----------------------------------------------------------------------------
+
+# SKU for Azure AI Search (basic, standard, standard2, standard3, storage_optimized_l1, storage_optimized_l2)
+hub_aisearch_sku = "standard"
+
+# Number of replicas for Azure AI Search
+hub_aisearch_replica_count = 1
+
+# Number of partitions for Azure AI Search
+hub_aisearch_partition_count = 1
+
+# Whether to enable semantic search capabilities
+hub_aisearch_semantic_search_sku = "standard"
+
+# -----------------------------------------------------------------------------
+# PostgreSQL Configuration
+# -----------------------------------------------------------------------------
+
+# Username for PostgreSQL administrator
+hub_postgresql_admin_username = "pgadmin"
+
+# Version of PostgreSQL to deploy
+hub_postgresql_version = "12"
+
+# SKU for PostgreSQL Flexible Server (e.g., GP_Standard_D2s_v3, B_Standard_B1ms)
+hub_postgresql_sku_name = "GP_Standard_D2s_v3"
+
+# Storage size in MB for PostgreSQL
+hub_postgresql_storage_mb = 32768
+
+# Storage tier for PostgreSQL (P4, P6, P10, P15, P20, P30, P40, P50)
+hub_postgresql_storage_tier = "P4"
+
+# Authentication method for PostgreSQL (AzureADAndPassword, AzureADOnly, Password)
+hub_postgresql_authentication_method = "AzureADAndPassword"
+
+# -----------------------------------------------------------------------------
+# Storage Account Configuration
+# -----------------------------------------------------------------------------
+
+# Account tier for hub storage (Standard, Premium)
+hub_storage_account_tier = "Standard"
+
+# Replication type for hub storage (LRS, GRS, RAGRS, ZRS, GZRS, RAGZRS)
+hub_storage_account_replication_type = "GRS"
+
+# Account tier for AI spoke storage
+spoke_ai_storage_account_tier = "Standard"
+
+# Replication type for AI spoke storage
+spoke_ai_storage_account_replication_type = "LRS"
+
+# -----------------------------------------------------------------------------
+# Container Registry Configuration
+# -----------------------------------------------------------------------------
+
+# SKU for Azure Container Registry (Basic, Standard, Premium)
+hub_acr_sku = "Standard"
+
+# Whether to enable admin user for ACR
+hub_acr_admin_enabled = true
+
+# Whether to enable public network access for ACR
+hub_acr_public_network_access_enabled = false
+
+# -----------------------------------------------------------------------------
+# Key Vault Configuration
+# -----------------------------------------------------------------------------
+
+# SKU for Key Vault (standard, premium)
+spoke_api_keyvault_sku_name = "standard"
+spoke_ai_keyvault_sku_name = "standard"
+
+# Whether to enable purge protection for Key Vault
+spoke_api_keyvault_purge_protection_enabled = true
+spoke_ai_keyvault_purge_protection_enabled = true
+
+# Soft delete retention period in days
+spoke_api_keyvault_soft_delete_retention_days = 7
+spoke_ai_keyvault_soft_delete_retention_days = 7
+
+# -----------------------------------------------------------------------------
+# Application Gateway Configuration
+# -----------------------------------------------------------------------------
+
+# SKU for Application Gateway (Standard_v2, WAF_v2)
+spoke_api_ag_sku_name = "WAF_v2"
+
+# Tier for Application Gateway (Standard_v2, WAF_v2)
+spoke_api_ag_sku_tier = "WAF_v2"
+
+# Minimum number of instances for Application Gateway
+spoke_api_ag_autoscale_min_capacity = 1
+
+# Maximum number of instances for Application Gateway
+spoke_api_ag_autoscale_max_capacity = 2
+
+# Path to SSL certificate file (PFX format)
+spoke_api_ag_ssl_certificate_path = "path/to/your/certificate.pfx"
+
+# -----------------------------------------------------------------------------
+# Web App Configuration
+# -----------------------------------------------------------------------------
+
+# SKU for App Service Plan (B1, B2, B3, S1, S2, S3, P1v2, P2v2, P3v2)
+spoke_api_webapp_sku_name = "B1"
+
+# SKU for Web App backend
+spoke_api_webappbackend_sku_name = "P1v2"
+
+# Docker image for frontend web app
+spoke_api_webapp_docker_image = "your-registry/frontend:latest"
+
+# Docker image for backend web app
+spoke_api_webappbackend_docker_image = "your-registry/backend:latest"
+
+# -----------------------------------------------------------------------------
+# Container Apps Configuration
+# -----------------------------------------------------------------------------
+
+# Minimum number of replicas for Container Apps
+spoke_ai_containerapp_min_replicas = 0
+
+# Maximum number of replicas for Container Apps
+spoke_ai_containerapp_max_replicas = 3
+
+# CPU allocation for Container Apps (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
+spoke_ai_containerapp_cpu = 0.5
+
+# Memory allocation for Container Apps (0.5Gi, 1Gi, 1.5Gi, 2Gi, 3Gi, 3.5Gi, 4Gi)
+spoke_ai_containerapp_memory = "1Gi"
+
+# Docker image for Container Apps
+spoke_ai_containerapp_image = "your-registry/ai-app:latest"
+
+# -----------------------------------------------------------------------------
+# Network Security Configuration
+# -----------------------------------------------------------------------------
+
+# List of allowed source IP addresses for SSH access
+allowed_ssh_sources = ["YOUR_PUBLIC_IP/32"]
+
+# List of allowed source IP addresses for Application Gateway
+allowed_ag_sources = ["0.0.0.0/0"]
+
+# WAF mode (Prevention, Detection)
+spoke_api_ag_waf_mode = "Prevention"
+
+# Whether WAF is enabled
+spoke_api_ag_waf_enabled = true
+
+# OWASP rule set version (3.0, 3.1, 3.2)
+spoke_api_ag_waf_owasp_version = "3.2"
+
+# -----------------------------------------------------------------------------
+# Application URLs Configuration
+# -----------------------------------------------------------------------------
+
+# Frontend application URL
+frontend_app_url = "https://your-frontend-domain.com"
+
+# Backend application URL
+backend_app_url = "https://your-backend-domain.com"
+
+# -----------------------------------------------------------------------------
+# Application Insights Configuration
+# -----------------------------------------------------------------------------
+
+# Whether to enable Application Insights
+appinsights_enabled = true
+
+# Application type for Application Insights (web, ios, java, MobileCenter, Node.JS, other, phone, store, web)
+appinsights_application_type = "web"
+
+# -----------------------------------------------------------------------------
+# DNS Configuration
+# -----------------------------------------------------------------------------
+
+# Enable private DNS zones (true/false)
+enable_private_dns = true
+
+# Custom DNS servers (optional, leave empty for Azure default)
+custom_dns_servers = []
+
+# -----------------------------------------------------------------------------
+# Backup and Disaster Recovery
+# -----------------------------------------------------------------------------
+
+# Enable backup for PostgreSQL (true/false)
+hub_postgresql_backup_enabled = true
+
+# Backup retention period in days
+hub_postgresql_backup_retention_days = 7
+
+# Geo-redundant backup enabled (true/false)
+hub_postgresql_geo_redundant_backup_enabled = true
+
+# -----------------------------------------------------------------------------
+# Monitoring and Logging
+# -----------------------------------------------------------------------------
+
+# Log retention period in days
+log_retention_days = 30
+
+# Enable diagnostic settings (true/false)
+enable_diagnostic_settings = true
+
+# -----------------------------------------------------------------------------
+# Tags Configuration
+# -----------------------------------------------------------------------------
+
+# Common tags to apply to all resources
+common_tags = {
+  Environment = "dev"
+  Project     = "your-project"
+  Owner       = "your-team"
+  CostCenter  = "your-cost-center"
+}

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelix API Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 800px;
+        }
+        h1 { color: #333; }
+        .test-section {
+            background: #f8f8f8;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #007acc;
+            border-radius: 3px;
+        }
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #005999; }
+        .result {
+            background: #e8f4f8;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error { background: #ffe6e6; }
+        .success { background: #e6ffe6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Kelix Architecture Test</h1>
+        <p>Simple frontend that directly calls the backend API.</p>
+        
+        <div class="test-section">
+            <h3>Backend Configuration</h3>
+            <p><strong>Backend URL:</strong> <span id="backendUrl">(not set)</span></p>
+            <input type="text" id="backendUrlInput" placeholder="Enter backend URL" style="width: 400px; padding: 5px;">
+            <button onclick="updateBackendUrl()">Update URL</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Basic API Tests</h3>
+            <button onclick="testHealth()">Health Check</button>
+            <button onclick="testRandom()">Random Number</button>
+            <button onclick="testInfo()">API Info</button>
+            <div id="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Azure Hub Services Tests</h3>
+            <button onclick="testBlobStorage()">🗃️ Blob Storage</button>
+            <button onclick="testOpenAI()">🤖 OpenAI</button>
+            <button onclick="testAISearch()">🔍 AI Search</button>
+            <button onclick="testPostgreSQL()">🗄️ PostgreSQL</button>
+            <button onclick="testACR()">📦 Container Registry</button>
+            <button onclick="testAllServices()">🚀 Test All Services</button>
+            <div id="serviceResults"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Manual curl Commands</h3>
+            <p><code>curl <span id="curlRandom">[set BACKEND_API_URL]/api/random</span></code></p>
+            <p><code>curl <span id="curlHealth">[set BACKEND_API_URL]/health</span></code></p>
+        </div>
+        
+        <hr>
+        <p><small>Kelix Architecture Test | Frontend: Simple HTML+JS | Backend: Node.js API</small></p>
+    </div>
+
+    <script src="/config.js"></script>
+    <script>
+        let backendUrl = (typeof window !== 'undefined' && window.BACKEND_API_URL) ? window.BACKEND_API_URL : '';
+        
+        function updateBackendUrl() {
+            const input = document.getElementById('backendUrlInput');
+            if (input.value.trim()) {
+                backendUrl = input.value.trim();
+                document.getElementById('backendUrl').textContent = backendUrl;
+                document.getElementById('curlRandom').textContent = backendUrl + '/api/random';
+                document.getElementById('curlHealth').textContent = backendUrl + '/health';
+                addResult('Backend URL updated to: ' + backendUrl, 'success');
+            }
+        }
+        
+        function addResult(message, type = '', containerId = 'results') {
+            const results = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'result ' + type;
+            div.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        async function testRandom() {
+            addResult('Testing Random Number API...');
+            try {
+                const response = await fetch(backendUrl + '/api/random', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ Random API Success: ' + JSON.stringify(data, null, 2), 'success');
+                } else {
+                    addResult('❌ Random API Failed: ' + response.status + ' ' + response.statusText, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Random API Error: ' + error.message, 'error');
+            }
+        }
+        
+        async function testHealth() {
+            addResult('Testing Health Check...');
+            try {
+                const response = await fetch(backendUrl + '/health', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ Health Check Success: ' + JSON.stringify(data, null, 2), 'success');
+                } else {
+                    addResult('❌ Health Check Failed: ' + response.status + ' ' + response.statusText, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Health Check Error: ' + error.message, 'error');
+            }
+        }
+        
+        async function testInfo() {
+            addResult('Testing API Info...');
+            try {
+                const response = await fetch(backendUrl + '/api/info', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ API Info Success: ' + JSON.stringify(data, null, 2), 'success');
+                } else {
+                    addResult('❌ API Info Failed: ' + response.status + ' ' + response.statusText, 'error');
+                }
+            } catch (error) {
+                addResult('❌ API Info Error: ' + error.message, 'error');
+            }
+        }
+
+        // Azure Service Test Functions
+        async function testBlobStorage() {
+            addResult('Testing Blob Storage...', '', 'serviceResults');
+            try {
+                const response = await fetch(backendUrl + '/api/blob/test', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ Blob Storage Success: ' + JSON.stringify(data, null, 2), 'success', 'serviceResults');
+                } else {
+                    const errorData = await response.json();
+                    addResult('❌ Blob Storage Failed: ' + JSON.stringify(errorData, null, 2), 'error', 'serviceResults');
+                }
+            } catch (error) {
+                addResult('❌ Blob Storage Error: ' + error.message, 'error', 'serviceResults');
+            }
+        }
+
+        async function testOpenAI() {
+            addResult('Testing OpenAI...', '', 'serviceResults');
+            try {
+                const response = await fetch(backendUrl + '/api/openai/test', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ OpenAI Success: ' + JSON.stringify(data, null, 2), 'success', 'serviceResults');
+                } else {
+                    const errorData = await response.json();
+                    addResult('❌ OpenAI Failed: ' + JSON.stringify(errorData, null, 2), 'error', 'serviceResults');
+                }
+            } catch (error) {
+                addResult('❌ OpenAI Error: ' + error.message, 'error', 'serviceResults');
+            }
+        }
+
+        async function testAISearch() {
+            addResult('Testing AI Search...', '', 'serviceResults');
+            try {
+                const response = await fetch(backendUrl + '/api/search/test', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ AI Search Success: ' + JSON.stringify(data, null, 2), 'success', 'serviceResults');
+                } else {
+                    const errorData = await response.json();
+                    addResult('❌ AI Search Failed: ' + JSON.stringify(errorData, null, 2), 'error', 'serviceResults');
+                }
+            } catch (error) {
+                addResult('❌ AI Search Error: ' + error.message, 'error', 'serviceResults');
+            }
+        }
+
+        async function testPostgreSQL() {
+            addResult('Testing PostgreSQL...', '', 'serviceResults');
+            try {
+                const response = await fetch(backendUrl + '/api/postgres/test', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ PostgreSQL Success: ' + JSON.stringify(data, null, 2), 'success', 'serviceResults');
+                } else {
+                    const errorData = await response.json();
+                    addResult('❌ PostgreSQL Failed: ' + JSON.stringify(errorData, null, 2), 'error', 'serviceResults');
+                }
+            } catch (error) {
+                addResult('❌ PostgreSQL Error: ' + error.message, 'error', 'serviceResults');
+            }
+        }
+
+        async function testACR() {
+            addResult('Testing Container Registry...', '', 'serviceResults');
+            try {
+                const response = await fetch(backendUrl + '/api/acr/test', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ Container Registry Success: ' + JSON.stringify(data, null, 2), 'success', 'serviceResults');
+                } else {
+                    const errorData = await response.json();
+                    addResult('❌ Container Registry Failed: ' + JSON.stringify(errorData, null, 2), 'error', 'serviceResults');
+                }
+            } catch (error) {
+                addResult('❌ Container Registry Error: ' + error.message, 'error', 'serviceResults');
+            }
+        }
+
+        async function testAllServices() {
+            addResult('🚀 Starting comprehensive service tests...', '', 'serviceResults');
+            await testBlobStorage();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second between tests
+            await testOpenAI();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testAISearch();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testPostgreSQL();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testACR();
+            addResult('✅ All service tests completed!', 'success', 'serviceResults');
+        }
+        
+        // Initialize displayed URL and optionally auto-test
+        window.addEventListener('load', () => {
+            if (backendUrl) {
+                document.getElementById('backendUrl').textContent = backendUrl;
+                document.getElementById('curlRandom').textContent = backendUrl + '/api/random';
+                document.getElementById('curlHealth').textContent = backendUrl + '/health';
+                // Auto-test basic endpoints on load
+                setTimeout(() => {
+                    testHealth();
+                    testInfo();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
