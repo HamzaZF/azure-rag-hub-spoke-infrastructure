@@ -271,13 +271,4 @@ This file contains all non-sensitive configuration values organized into section
 
 ### 🔒 secrets.tfvars - Sensitive Configuration
 
-This file contains all sensitive values that should NEVER be committed to version control:
-
-**Required Secrets Categories:**
-
-1. **Infrastructure Passwords**
-   ```hcl
-   hub_vm_admin_password = "ComplexP@ssw0rd123!"
-   hub_postgresql_admin_password = "PostgresP@ssw0rd123!"
-   spoke_api_ag_ssl_certificate_password = "CertP@ssw0rd123!"
-   ```
+This file contains all sensitive values (vm password, ...)
