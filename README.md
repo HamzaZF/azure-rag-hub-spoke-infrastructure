@@ -1,5 +1,7 @@
 # Azure Hub-Spoke Architecture for RAG-Based Applications
 
+![Architecture Diagram](assets/kelix-architecture-sec.png)
+
 ## 📋 Table of Contents
 
 - [Executive Summary](#executive-summary)
