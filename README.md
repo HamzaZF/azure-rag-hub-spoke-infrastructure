@@ -573,12 +573,6 @@ The infrastructure can be validated using Azure CLI commands and portal monitori
 
 ---
 
-## License
-
-This project is available for educational and professional portfolio purposes.
-
----
-
 ## Support
 
 For infrastructure questions or issues:
