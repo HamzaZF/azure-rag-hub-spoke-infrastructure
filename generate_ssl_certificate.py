@@ -28,9 +28,11 @@ import tempfile
 
 
 class SSLCertificateGenerator:
-    def __init__(self, domain="kelix-api.local", password="KelixSSL2024!", output_dir="./ssl_certs"):
+    def __init__(self, domain="kelix-api.local", password=None, output_dir="./ssl_certs"):
         self.domain = domain
-        self.password = password
+        self.password = password or os.environ.get('SSL_CERT_PASSWORD', 'DefaultSSL2024!')
+        if self.password == 'DefaultSSL2024!':
+            print("Warning: Using default password. Set SSL_CERT_PASSWORD environment variable for production use.")
         self.output_dir = output_dir
         self.key_file = os.path.join(output_dir, "ssl_cert.key")
         self.cert_file = os.path.join(output_dir, "ssl_cert.crt")

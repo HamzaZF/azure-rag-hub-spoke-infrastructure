@@ -257,11 +257,9 @@ spoke_api_webapp_sku_name = "B1"
 # SKU for Web App backend
 spoke_api_webappbackend_sku_name = "P1v2"
 
-# Docker image for frontend web app
-spoke_api_webapp_docker_image = "your-registry/frontend:latest"
-
-# Docker image for backend web app
-spoke_api_webappbackend_docker_image = "your-registry/backend:latest"
+# Container images can be configured post-deployment
+# spoke_api_webapp_docker_image = "your-registry/frontend:latest"
+# spoke_api_webappbackend_docker_image = "your-registry/backend:latest"
 
 # -----------------------------------------------------------------------------
 # Container Apps Configuration
@@ -279,8 +277,8 @@ spoke_ai_containerapp_cpu = 0.5
 # Memory allocation for Container Apps (0.5Gi, 1Gi, 1.5Gi, 2Gi, 3Gi, 3.5Gi, 4Gi)
 spoke_ai_containerapp_memory = "1Gi"
 
-# Docker image for Container Apps
-spoke_ai_containerapp_image = "your-registry/ai-app:latest"
+# Container images can be configured post-deployment
+# spoke_ai_containerapp_image = "your-registry/ai-app:latest"
 
 # -----------------------------------------------------------------------------
 # Network Security Configuration
@@ -301,25 +299,6 @@ spoke_api_ag_waf_enabled = true
 # OWASP rule set version (3.0, 3.1, 3.2)
 spoke_api_ag_waf_owasp_version = "3.2"
 
-# -----------------------------------------------------------------------------
-# Application URLs Configuration
-# -----------------------------------------------------------------------------
-
-# Frontend application URL
-frontend_app_url = "https://your-frontend-domain.com"
-
-# Backend application URL
-backend_app_url = "https://your-backend-domain.com"
-
-# -----------------------------------------------------------------------------
-# Application Insights Configuration
-# -----------------------------------------------------------------------------
-
-# Whether to enable Application Insights
-appinsights_enabled = true
-
-# Application type for Application Insights (web, ios, java, MobileCenter, Node.JS, other, phone, store, web)
-appinsights_application_type = "web"
 
 # -----------------------------------------------------------------------------
 # DNS Configuration

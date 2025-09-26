@@ -1,4 +1,4 @@
-# Azure Hub-Spoke Architecture for RAG-Based Applications
+# Azure Hub-Spoke Infrastructure for AI and Cloud-Native Applications
 
 ![Architecture Diagram](assets/architecture.png)
 
@@ -25,14 +25,14 @@
 
 ## Executive Summary
 
-This Terraform implementation deploys a **production-grade hub-spoke network architecture on Azure**, specifically designed for hosting **RAG (Retrieval-Augmented Generation) based applications**. The infrastructure provides a secure, scalable foundation for AI-powered applications that require integration with Azure OpenAI, cognitive search, and data storage services.
+This Terraform implementation deploys a **production-grade hub-spoke network architecture on Azure**, designed to provide secure, scalable infrastructure for **AI and cloud-native applications**. The infrastructure offers a robust foundation with Azure OpenAI, AI Search, and data services, ready for application deployment using managed identities and private connectivity.
 
 ### What This Infrastructure Provides
 
 The solution implements a **three-network topology** consisting of:
 - A **central hub network** that hosts shared AI services (Azure OpenAI, AI Search, PostgreSQL, Blob Storage, Azure Container Registry)
-- An **API spoke network** for web application (frontend + backend) with Application Gateway ingress
-- An **AI spoke network** for AI containerized workloads running on Azure Container Apps
+- An **API spoke network** for web applications with Application Gateway ingress and private connectivity
+- An **AI spoke network** for containerized workloads running on Azure Container Apps
 
 Azure Firewall serves as a **secure router between spoke networks**, while **Application Gateway handles all inbound traffic** from the internet. All Azure PaaS services are accessed through **private endpoints**, eliminating public internet exposure. The architecture uses **managed identities**, removing the need for credential management.
 
@@ -46,7 +46,7 @@ Azure Firewall serves as a **secure router between spoke networks**, while **App
 - AI/ML services (OpenAI models, AI Search tiers, embeddings)
 - Database configurations (PostgreSQL versions, storage, authentication)
 - Container platform (Apps Environment, workload profiles, scaling)
-- Web applications (App Service plans, container images, settings)
+- Web applications (App Service plans and infrastructure)
 - Application Gateway (SSL certificates, routing rules, health probes)
 - Managed identities and RBAC assignments
 - DNS zones and private endpoint configurations
@@ -73,11 +73,11 @@ Azure Firewall serves as a **secure router between spoke networks**, while **App
 ## 🎯 Use Cases
 
 This architecture is ideal for:
-- **RAG-based chatbots and Q&A systems** that need secure access to Azure OpenAI
-- **Document intelligence applications** combining AI Search with GPT models
-- **Enterprise AI applications** requiring private connectivity to AI services
-- **Microservices architectures** where AI workloads run in containers
-- **Hybrid scenarios** where on-premises systems need secure cloud AI access
+- **AI-powered applications** requiring secure access to Azure OpenAI and AI Search
+- **Enterprise cloud applications** needing private connectivity to Azure services  
+- **Microservices architectures** with containerized workloads
+- **Multi-tier applications** requiring network isolation and security
+- **Hybrid cloud scenarios** connecting on-premises systems to Azure securely
 
 ---
 
@@ -108,18 +108,20 @@ This design ensures that:
 ### 🏗️ Subnet Architecture
 
 **Hub Network Subnets:**
-- `10.0.1.0/24` - Private Endpoints subnet (for all hub PaaS services)
-- `10.0.2.0/24` - VM subnet (management jumpbox)
-- `10.0.3.0/24` - AzureFirewallSubnet
+- `10.0.0.0/24` - Private Endpoints subnet (for all hub PaaS services)
+- `10.0.1.0/24` - VM subnet (management jumpbox)
+- `10.0.2.0/24` - AzureFirewallSubnet
+- `10.0.3.0/24` - Agent VM subnet (additional management)
 
 **API Spoke Subnets:**
-- `10.1.1.0/24` - Application Gateway subnet
-- `10.1.2.0/24` - Azure App Service subnet for backend (VNet integrated)
-- `10.1.3.0/24` - Private Endpoints subnet
+- `10.1.0.0/24` - Application Gateway subnet
+- `10.1.1.0/24` - Azure App Service subnet for backend (VNet integrated)
+- `10.1.2.0/24` - Private Endpoints subnet
 
 **AI Spoke Subnets:**
-- `10.2.1.0/23` - Container Apps Environment subnet
-- `10.2.3.0/24` - Private Endpoints subnet
+- `10.2.0.0/23` - Container Apps Environment subnet
+- `10.2.2.0/24` - Private Endpoints subnet
+- `10.2.3.0/24` - VM subnet (AI workload management)
 
 ### 🔐 Private DNS Architecture
 
@@ -206,7 +208,7 @@ The Azure Firewall serves as a **secure router** between spokes:
 
 ### 📊 Architecture Diagram
 
-![Architecture Diagram](assets/kelix-architecture-sec.png)
+![Architecture Diagram](assets/architecture.png)
 
 ---
 
@@ -263,12 +265,331 @@ This file contains all non-sensitive configuration values organized into section
 - Allowed SSH sources
 - Container registry settings
 
-**8. Application Settings**
-- Container image names
-- Environment variables
-- Application Insights configuration
-- Frontend/backend URLs
+**8. Infrastructure Integration**
+- SSL certificate configuration
+- Managed identity assignments
+- Resource naming conventions
 
 ### 🔒 secrets.tfvars - Sensitive Configuration
 
-This file contains all sensitive values (vm password, ...)
+This file contains all sensitive values that must never be committed to version control:
+
+**Required Sensitive Values:**
+- VM administrator passwords (hub, agent, AI spoke VMs)
+- PostgreSQL administrator password
+- SSL certificate passwords for Application Gateway
+
+**Example Structure:**
+```hcl
+# Infrastructure Authentication
+hub_vm_admin_password = "YourSecurePassword123!"
+hub_postgresql_admin_password = "DatabasePassword456!"
+spoke_api_ag_ssl_certificate_password = "CertificatePassword789!"
+```
+
+---
+
+## 🚀 Prerequisites
+
+Before deploying this infrastructure, ensure you have:
+
+### **Required Tools**
+- **Terraform** >= 1.9.0 ([Download](https://terraform.io/downloads.html))
+- **Azure CLI** >= 2.50.0 ([Install Guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
+- **Python** >= 3.6 (for utility scripts)
+- **OpenSSL** (for SSL certificate generation)
+
+### **Azure Requirements**
+- Valid Azure subscription with sufficient credits
+- Service Principal or User Account with following permissions:
+  - `Contributor` role on target subscription
+  - `User Access Administrator` role (for RBAC assignments)
+  - `Azure AD Directory Readers` role (for managed identity operations)
+
+### **Resource Quotas**
+Verify your subscription has sufficient quotas:
+- **Compute**: 10+ vCPUs for VMs and Container Apps
+- **Networking**: 3 Virtual Networks, 1 Application Gateway, 1 Azure Firewall
+- **Storage**: 2 Storage Accounts
+- **AI Services**: Azure OpenAI, AI Search (check regional availability)
+
+---
+
+## 📋 Installation & Deployment
+
+### **Step 1: Environment Setup**
+
+1. **Clone and navigate to the project:**
+   ```bash
+   git clone <repository-url>
+   cd azure-rag-hub-spoke-infrastructure
+   ```
+
+2. **Authenticate with Azure:**
+   ```bash
+   az login
+   az account set --subscription "your-subscription-id"
+   ```
+
+3. **Verify Azure permissions:**
+   ```bash
+   az role assignment list --assignee $(az account show --query user.name -o tsv) --scope "/subscriptions/$(az account show --query id -o tsv)"
+   ```
+
+### **Step 2: Configuration Setup**
+
+1. **Create configuration files:**
+   ```bash
+   # Copy template files
+   cp configuration/terraform/config.tfvars.example configuration/terraform/config.tfvars
+   cp configuration/terraform/secrets.tfvars.example configuration/terraform/secrets.tfvars
+   ```
+
+2. **Edit non-sensitive configuration:**
+   ```bash
+   # Update with your specific values
+   nano configuration/terraform/config.tfvars
+   ```
+   
+   **Key values to update:**
+   - `subscription_id` - Your Azure subscription ID
+   - `naming_company` - Your organization name
+   - `hub_location` - Your preferred Azure region
+   - `hub_openai_custom_subdomain` - Globally unique OpenAI subdomain
+   - Network addressing (VNet/subnet CIDR blocks)
+   - VM sizes and compute configurations
+
+3. **Configure sensitive values:**
+   ```bash
+   # IMPORTANT: Keep this file secure and never commit to git
+   nano configuration/terraform/secrets.tfvars
+   ```
+   
+   **Required sensitive values:**
+   - VM administrator passwords
+   - PostgreSQL administrator password  
+   - SSL certificate password (if using custom certificates)
+
+### **Step 3: SSL Certificate Generation (Optional)**
+
+Generate self-signed certificates for testing:
+
+```bash
+# Set certificate password as environment variable
+export SSL_CERT_PASSWORD="YourCertificatePassword123!"
+
+# Generate SSL certificate
+python generate_ssl_certificate.py --domain your-domain.com
+```
+
+### **Step 4: Terraform Deployment**
+
+1. **Initialize Terraform:**
+   ```bash
+   terraform init
+   ```
+
+2. **Validate configuration:**
+   ```bash
+   terraform validate
+   terraform fmt
+   ```
+
+3. **Review deployment plan:**
+   ```bash
+   terraform plan \
+     -var-file="configuration/terraform/config.tfvars" \
+     -var-file="configuration/terraform/secrets.tfvars"
+   ```
+
+4. **Deploy infrastructure:**
+   ```bash
+   terraform apply \
+     -var-file="configuration/terraform/config.tfvars" \
+     -var-file="configuration/terraform/secrets.tfvars"
+   ```
+
+   **Deployment time:** ~45-60 minutes for complete infrastructure
+
+### **Step 5: Post-Deployment Verification**
+
+1. **Verify infrastructure services:**
+   ```bash
+   python scripts/blob_storage_test.py
+   python scripts/postgresql_managed_identity_test.py
+   python scripts/azure_ai_search_test.py
+   python scripts/open_ai_test.py
+   ```
+
+2. **Test network connectivity:**
+   ```bash
+   python scripts/diagnose_routing.py
+   ```
+
+3. **Validate Application Gateway infrastructure:**
+   ```bash
+   python scripts/app_gateway_test.py
+   ```
+
+4. **Configure PostgreSQL managed identity access:**
+   ```bash
+   # Run from hub VM (jump box) - see configuration/pgsql/README.md
+   ./configuration/pgsql/init_pgsql_script.txt
+   ```
+
+---
+
+## 🔧 Configuration Management
+
+### **Environment-Specific Configurations**
+
+For multiple environments, create separate tfvars files:
+
+```bash
+# Development
+configuration/terraform/dev.tfvars
+configuration/terraform/dev-secrets.tfvars
+
+# Production  
+configuration/terraform/prod.tfvars
+configuration/terraform/prod-secrets.tfvars
+```
+
+Deploy with environment-specific configs:
+```bash
+terraform apply -var-file="configuration/terraform/prod.tfvars" -var-file="configuration/terraform/prod-secrets.tfvars"
+```
+
+### **Key Configuration Sections**
+
+| Configuration Area | File Location | Description |
+|-------------------|---------------|-------------|
+| **Network Topology** | `config.tfvars` | VNet addressing, subnet allocation |
+| **Compute Resources** | `config.tfvars` | VM sizes, Container Apps scaling |
+| **AI/ML Services** | `config.tfvars` | OpenAI models, AI Search configuration |
+| **Security Settings** | `config.tfvars` | WAF rules, allowed IP ranges |
+| **Sensitive Data** | `secrets.tfvars` | VM passwords, SSL certificates |
+| **PostgreSQL Setup** | `configuration/pgsql/` | Managed identity database access configuration |
+
+---
+
+## 🛠️ Management & Operations
+
+### **Common Operations**
+
+**Scale Container Apps:**
+```bash
+# Update max_replicas in config.tfvars, then:
+terraform apply -var-file="configuration/terraform/config.tfvars" -var-file="configuration/terraform/secrets.tfvars" -target=module.spoke_ai
+```
+
+**Update OpenAI Models:**
+```bash
+# Modify OpenAI configuration in config.tfvars, then:
+terraform apply -var-file="configuration/terraform/config.tfvars" -var-file="configuration/terraform/secrets.tfvars" -target=module.hub.module.openai
+```
+
+**Rotate Secrets:**
+```bash
+# Update secrets.tfvars with new values, then:
+terraform apply -var-file="configuration/terraform/config.tfvars" -var-file="configuration/terraform/secrets.tfvars"
+```
+
+### **Monitoring & Troubleshooting**
+
+**View Application Gateway Logs:**
+```bash
+az monitor activity-log list --resource-group $(terraform output -raw spoke_api_resource_group_name)
+```
+
+**Check Private Endpoint Connectivity:**
+```bash
+python scripts/diagnose_routing.py --verbose
+```
+
+**PostgreSQL Connection Test:**
+```bash
+python scripts/postgresql_managed_identity_test.py --test-connection
+```
+
+---
+
+## 🗑️ Cleanup
+
+To destroy the infrastructure:
+
+```bash
+# CAUTION: This will delete ALL resources
+terraform destroy \
+  -var-file="configuration/terraform/config.tfvars" \
+  -var-file="configuration/terraform/secrets.tfvars"
+```
+
+**Note:** Some resources may require manual cleanup:
+- Key Vault (if purge protection is enabled)
+- Storage account containers with retention policies
+- Azure AD applications (if any were created manually)
+
+---
+
+## 📊 Architecture Validation
+
+The infrastructure includes comprehensive testing scripts to validate infrastructure deployment and connectivity:
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `blob_storage_test.py` | Validates Blob Storage infrastructure connectivity | `python scripts/blob_storage_test.py` |
+| `postgresql_managed_identity_test.py` | Tests PostgreSQL managed identity authentication | `python scripts/postgresql_managed_identity_test.py` |
+| `azure_ai_search_test.py` | Verifies AI Search service deployment | `python scripts/azure_ai_search_test.py` |
+| `open_ai_test.py` | Tests Azure OpenAI service availability | `python scripts/open_ai_test.py` |
+| `diagnose_routing.py` | Network connectivity and routing validation | `python scripts/diagnose_routing.py` |
+| `app_gateway_test.py` | Application Gateway infrastructure health check | `python scripts/app_gateway_test.py` |
+
+---
+
+## 🔐 Security Considerations
+
+### **Network Security**
+- All PaaS services accessible only via private endpoints
+- Azure Firewall controls spoke-to-spoke traffic
+- NSGs provide subnet-level security
+- Application Gateway with WAF v2 protects internet-facing services
+
+### **Identity & Access**
+- Managed identities eliminate credential management for applications
+- RBAC follows principle of least privilege
+- Key Vault infrastructure for secure secret storage
+- Azure AD integration for PostgreSQL authentication
+
+### **Data Protection**
+- Storage accounts deny public access by default
+- Minimum TLS 1.2 enforced across all services
+- Private DNS zones prevent DNS hijacking
+- Container registry isolated from public internet
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Test your changes thoroughly
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is available for educational and professional portfolio purposes.
+
+---
+
+## 📞 Support
+
+For infrastructure questions or issues:
+- Create an issue in this repository
+- Include Terraform version and error details
+- Provide relevant infrastructure configuration (without sensitive data)
+- Applications should be deployed separately using the managed identities and outputs provided by this infrastructure
