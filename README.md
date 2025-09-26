@@ -2,7 +2,7 @@
 
 ![Architecture Diagram](assets/architecture.png)
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Executive Summary](#executive-summary)
 - [Architecture Overview](#architecture-overview)
@@ -70,7 +70,7 @@ Azure Firewall serves as a **secure router between spoke networks**, while **App
 
 ---
 
-## 🎯 Use Cases
+## Use Cases
 
 This architecture is ideal for:
 - **AI-powered applications** requiring secure access to Azure OpenAI and AI Search
@@ -81,9 +81,9 @@ This architecture is ideal for:
 
 ---
 
-## 🏛️ Architecture Overview
+## Architecture Overview
 
-### 🌐 Network Topology
+### Network Topology
 
 The infrastructure implements a **hub-spoke network model** with three Virtual Networks (VNets):
 
@@ -93,7 +93,7 @@ The infrastructure implements a **hub-spoke network model** with three Virtual N
 | **API Spoke VNet** | 10.1.0.0/16 | Web application delivery and internet ingress | `{region}-api-rg` |
 | **AI Spoke VNet** | 10.2.0.0/16 | Container-based AI workloads | `{region}-ai-rg` |
 
-### 🔗 Hub-Spoke Connectivity
+### Hub-Spoke Connectivity
 
 The networks are connected through **bidirectional VNet peering**:
 - Hub <-> API Spoke (direct peering)
@@ -105,7 +105,7 @@ This design ensures that:
 2. Shared services in the hub are directly accessible from both spokes
 3. Network segmentation is maintained between workload types
 
-### 🏗️ Subnet Architecture
+### Subnet Architecture
 
 **Hub Network Subnets:**
 - `10.0.0.0/24` - Private Endpoints subnet (for all hub PaaS services)
@@ -123,7 +123,7 @@ This design ensures that:
 - `10.2.2.0/24` - Private Endpoints subnet
 - `10.2.3.0/24` - VM subnet (AI workload management)
 
-### 🔐 Private DNS Architecture
+### Private DNS Architecture
 
 The solution implements **10 Private DNS Zones** for private endpoint resolution:
 
@@ -142,7 +142,7 @@ The solution implements **10 Private DNS Zones** for private endpoint resolution
 
 Each private endpoint automatically registers its private IP in the corresponding DNS zone, ensuring services resolve to private IPs (10.x.x.x) instead of public endpoints.
 
-### 🛡️ Security Layers
+### Security Layers
 
 The architecture implements **defense in depth** with multiple security layers:
 
@@ -178,7 +178,7 @@ The architecture implements **defense in depth** with multiple security layers:
    - **Application Gateway** handles SSL/TLS termination
    - WAF v2 protection against OWASP threats
 
-### 🚦 Traffic Flows
+### Traffic Flows
 
 **Inbound Traffic (Internet to Application):**
 ```
@@ -199,31 +199,31 @@ Web Apps/Container Apps -> Private Endpoint -> Azure PaaS Service
 - All PaaS services accessed through private IPs
 - DNS resolution handled by Private DNS Zones
 
-### 🔥 Azure Firewall Configuration
+### Azure Firewall Configuration
 
 The Azure Firewall serves as a **secure router** between spokes:
 - **Public IP** for outbound SNAT only (not for inbound traffic)
 - **Network Rule Collection** "Allow-Spoke-To-Spoke-Traffic"
 - Routes enforced via UDR on spoke subnets
 
-### 📊 Architecture Diagram
+### Architecture Diagram
 
 ![Architecture Diagram](assets/architecture.png)
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 The infrastructure is fully configurable through two configuration files located in `configuration/terraform/`:
 
-### 📁 Configuration Files Structure
+### Configuration Files Structure
 
 | File | Purpose | Git Status |
 |------|---------|------------|
 | **`config.tfvars`** | Non-sensitive infrastructure configuration | Can be committed | 
 | **`secrets.tfvars`** | Sensitive values (passwords, keys, tokens) | Must be in .gitignore | 
 
-### 📝 config.tfvars - Non-Sensitive Configuration
+### config.tfvars - Non-Sensitive Configuration
 
 This file contains all non-sensitive configuration values organized into sections:
 
@@ -270,7 +270,7 @@ This file contains all non-sensitive configuration values organized into section
 - Managed identity assignments
 - Resource naming conventions
 
-### 🔒 secrets.tfvars - Sensitive Configuration
+### secrets.tfvars - Sensitive Configuration
 
 This file contains all sensitive values that must never be committed to version control:
 
@@ -289,7 +289,7 @@ spoke_api_ag_ssl_certificate_password = "CertificatePassword789!"
 
 ---
 
-## 🚀 Prerequisites
+## Prerequisites
 
 Before deploying this infrastructure, ensure you have:
 
@@ -315,7 +315,7 @@ Verify your subscription has sufficient quotas:
 
 ---
 
-## 📋 Installation & Deployment
+## Installation & Deployment
 
 ### **Step 1: Environment Setup**
 
@@ -439,7 +439,7 @@ python generate_ssl_certificate.py --domain your-domain.com
 
 ---
 
-## 🔧 Configuration Management
+## Configuration Management
 
 ### **Environment-Specific Configurations**
 
@@ -473,7 +473,7 @@ terraform apply -var-file="configuration/terraform/prod.tfvars" -var-file="confi
 
 ---
 
-## 🛠️ Management & Operations
+## Management & Operations
 
 ### **Common Operations**
 
@@ -514,7 +514,7 @@ python scripts/postgresql_managed_identity_test.py --test-connection
 
 ---
 
-## 🗑️ Cleanup
+## Cleanup
 
 To destroy the infrastructure:
 
@@ -532,7 +532,7 @@ terraform destroy \
 
 ---
 
-## 📊 Architecture Validation
+## Architecture Validation
 
 The infrastructure includes comprehensive testing scripts to validate infrastructure deployment and connectivity:
 
@@ -547,7 +547,7 @@ The infrastructure includes comprehensive testing scripts to validate infrastruc
 
 ---
 
-## 🔐 Security Considerations
+## Security Considerations
 
 ### **Network Security**
 - All PaaS services accessible only via private endpoints
@@ -569,7 +569,7 @@ The infrastructure includes comprehensive testing scripts to validate infrastruc
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -580,13 +580,13 @@ The infrastructure includes comprehensive testing scripts to validate infrastruc
 
 ---
 
-## 📄 License
+## License
 
 This project is available for educational and professional portfolio purposes.
 
 ---
 
-## 📞 Support
+## Support
 
 For infrastructure questions or issues:
 - Create an issue in this repository
