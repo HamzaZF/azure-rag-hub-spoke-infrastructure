@@ -23,7 +23,7 @@ resource "azurerm_private_endpoint" "wa_pe" {
   subnet_id           = var.spoke_api_pe_web_app_subnet_id
 
   private_service_connection {
-    name                           = "kelix-backend-psc"
+    name                           = "backend-app-psc"
     private_connection_resource_id = var.spoke_api_pe_web_app_id
     subresource_names              = ["sites"]
     is_manual_connection           = false

@@ -171,7 +171,7 @@ resource "random_string" "appgw_suffix" {
 # WAF Policy with Custom Rules
 # -----------------------------------------------------------------------------
 resource "azurerm_web_application_firewall_policy" "waf_policy" {
-  name                = "kelix-api-waf-policy"
+  name                = "api-gateway-waf-policy"
   resource_group_name = var.spoke_api_ag_resource_group_name
   location            = var.spoke_api_ag_location
 

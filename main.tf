@@ -457,7 +457,7 @@ module "spoke_ai" {
 
 # Blob Storage DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_hub_link" {
-  name                  = "kelix-stg-wus3-blob-hub-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-blob-hub-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.blob.core.windows.net"
   virtual_network_id    = module.hub.hub_vnet_id
@@ -466,7 +466,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_hub_link"
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_api_link" {
-  name                  = "kelix-stg-wus3-blob-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-blob-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.blob.core.windows.net"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id
@@ -475,7 +475,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_api_link"
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_ai_link" {
-  name                  = "kelix-stg-wus3-blob-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-blob-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.blob.core.windows.net"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -485,7 +485,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob_storage_ai_link" 
 
 # OpenAI DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "openai_hub_link" {
-  name                  = "kelix-stg-wus3-openai-hub-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-openai-hub-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.openai.azure.com"
   virtual_network_id    = module.hub.hub_vnet_id
@@ -494,7 +494,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "openai_hub_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "openai_api_link" {
-  name                  = "kelix-stg-wus3-openai-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-openai-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.openai.azure.com"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id
@@ -503,7 +503,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "openai_api_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "openai_ai_link" {
-  name                  = "kelix-stg-wus3-openai-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-openai-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.openai.azure.com"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -513,7 +513,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "openai_ai_link" {
 
 # AI Search DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_hub_link" {
-  name                  = "kelix-stg-wus3-aisearch-hub-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-aisearch-hub-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.search.windows.net"
   virtual_network_id    = module.hub.hub_vnet_id
@@ -522,7 +522,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_hub_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_api_link" {
-  name                  = "kelix-stg-wus3-aisearch-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-aisearch-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.search.windows.net"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id
@@ -531,7 +531,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_api_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_ai_link" {
-  name                  = "kelix-stg-wus3-aisearch-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-aisearch-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.search.windows.net"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -541,7 +541,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "ai_search_ai_link" {
 
 # PostgreSQL DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_hub_link" {
-  name                  = "kelix-stg-wus3-pgsql-hub-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-pgsql-hub-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.postgres.database.azure.com"
   virtual_network_id    = module.hub.hub_vnet_id
@@ -550,7 +550,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_hub_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_api_link" {
-  name                  = "kelix-stg-wus3-pgsql-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-pgsql-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.postgres.database.azure.com"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id
@@ -559,7 +559,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_api_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_ai_link" {
-  name                  = "kelix-stg-wus3-pgsql-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-pgsql-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.postgres.database.azure.com"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -569,7 +569,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_ai_link" {
 
 # ACR DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "acr_hub_link" {
-  name                  = "kelix-stg-wus3-acr-hub-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-acr-hub-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.azurecr.io"
   virtual_network_id    = module.hub.hub_vnet_id
@@ -578,7 +578,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_hub_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "acr_api_link" {
-  name                  = "kelix-stg-wus3-acr-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-acr-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.azurecr.io"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id
@@ -587,7 +587,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_api_link" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "acr_ai_link" {
-  name                  = "kelix-stg-wus3-acr-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-acr-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.hub.hub_resource_group_name
   private_dns_zone_name = "privatelink.azurecr.io"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -597,7 +597,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_ai_link" {
 
 # AI Storage DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "table_storage_ai_link" {
-  name                  = "kelix-stg-wus3-aistorage-ai-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-aistorage-ai-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = azurerm_resource_group.ai_rg.name
   private_dns_zone_name = "privatelink.table.core.windows.net"
   virtual_network_id    = module.spoke_ai.spoke_ai_vnet_id
@@ -607,7 +607,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "table_storage_ai_link"
 
 # Web App DNS Zone Links
 resource "azurerm_private_dns_zone_virtual_network_link" "web_app_api_link" {
-  name                  = "kelix-stg-wus3-webapp-api-link-${random_string.dns_link_suffix.result}"
+  name                  = "hub-spoke-webapp-api-link-${random_string.dns_link_suffix.result}"
   resource_group_name   = module.spoke_api.resource_group_name
   private_dns_zone_name = "privatelink.azurewebsites.net"
   virtual_network_id    = module.spoke_api.spoke_api_vnet_id

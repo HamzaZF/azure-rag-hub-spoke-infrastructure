@@ -165,7 +165,7 @@ variable "spoke_api_ag_frontend_protocol" {
 variable "spoke_api_ag_ssl_certificate_name" {
   description = "The name for the SSL certificate in Application Gateway."
   type        = string
-  default     = "kelix-api-ssl-cert"
+  default     = "api-gateway-ssl-cert"
 }
 
 variable "spoke_api_ag_ssl_certificate_path" {

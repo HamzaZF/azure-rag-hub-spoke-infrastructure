@@ -16,7 +16,7 @@ module "naming" {
 # -----------------------------------------------------------------------------
 # PostgreSQL Flexible Server
 # -----------------------------------------------------------------------------
-resource "azurerm_postgresql_flexible_server" "kelix_pgsql" {
+resource "azurerm_postgresql_flexible_server" "postgresql" {
   name                          = "${module.naming.postgresql_server.name}-${random_string.postgresql_suffix.result}"
 
   resource_group_name           = var.hub_postgresql_resource_group_name
@@ -47,8 +47,8 @@ resource "random_string" "postgresql_suffix" {
 data "azurerm_client_config" "current" {}
 
 # Configure VM managed identity as PostgreSQL Azure AD administrator
-resource "azurerm_postgresql_flexible_server_active_directory_administrator" "kelix_pgsql_vm_admin" {
-  server_name         = azurerm_postgresql_flexible_server.kelix_pgsql.name
+resource "azurerm_postgresql_flexible_server_active_directory_administrator" "postgresql_vm_admin" {
+  server_name         = azurerm_postgresql_flexible_server.postgresql.name
   resource_group_name = var.hub_postgresql_resource_group_name
   tenant_id           = data.azurerm_client_config.current.tenant_id
   object_id           = var.vm_managed_identity_principal_id

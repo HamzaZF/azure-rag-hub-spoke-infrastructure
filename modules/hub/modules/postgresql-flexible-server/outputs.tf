@@ -9,42 +9,42 @@
 # -----------------------------------------------------------------------------
 output "hub_postgresql_server_id" {
   description = "The ID of the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.id
+  value       = azurerm_postgresql_flexible_server.postgresql.id
 }
 
 output "hub_postgresql_server_name" {
   description = "The name of the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.name
+  value       = azurerm_postgresql_flexible_server.postgresql.name
 }
 
 output "hub_postgresql_server_fqdn" {
   description = "The fully qualified domain name of the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.fqdn
+  value       = azurerm_postgresql_flexible_server.postgresql.fqdn
 }
 
 output "hub_postgresql_server_host" {
   description = "The host/endpoint for connecting to the PostgreSQL server."
-  value       = "${azurerm_postgresql_flexible_server.kelix_pgsql.name}.postgres.database.azure.com"
+  value       = "${azurerm_postgresql_flexible_server.postgresql.name}.postgres.database.azure.com"
 }
 
 output "hub_postgresql_server_version" {
   description = "The version of PostgreSQL running on the server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.version
+  value       = azurerm_postgresql_flexible_server.postgresql.version
 }
 
 output "hub_postgresql_server_location" {
   description = "The Azure region where the PostgreSQL server is deployed."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.location
+  value       = azurerm_postgresql_flexible_server.postgresql.location
 }
 
 output "hub_postgresql_server_resource_group_name" {
   description = "The resource group containing the PostgreSQL server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.resource_group_name
+  value       = azurerm_postgresql_flexible_server.postgresql.resource_group_name
 }
 
 output "hub_postgresql_server_zone" {
   description = "The availability zone of the PostgreSQL server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.zone
+  value       = azurerm_postgresql_flexible_server.postgresql.zone
 }
 
 # -----------------------------------------------------------------------------
@@ -52,12 +52,12 @@ output "hub_postgresql_server_zone" {
 # -----------------------------------------------------------------------------
 output "hub_postgresql_administrator_login" {
   description = "The administrator login name for the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.administrator_login
+  value       = azurerm_postgresql_flexible_server.postgresql.administrator_login
 }
 
 output "hub_postgresql_administrator_password" {
   description = "The administrator password for the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.administrator_password
+  value       = azurerm_postgresql_flexible_server.postgresql.administrator_password
   sensitive   = true
 }
 
@@ -66,10 +66,10 @@ output "hub_postgresql_administrator_password" {
 # -----------------------------------------------------------------------------
 output "hub_postgresql_server_sku_name" {
   description = "The SKU name of the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.sku_name
+  value       = azurerm_postgresql_flexible_server.postgresql.sku_name
 }
 
 output "hub_postgresql_server_storage_mb" {
   description = "The storage capacity in MB of the PostgreSQL server."
-  value       = azurerm_postgresql_flexible_server.kelix_pgsql.storage_mb
+  value       = azurerm_postgresql_flexible_server.postgresql.storage_mb
 }

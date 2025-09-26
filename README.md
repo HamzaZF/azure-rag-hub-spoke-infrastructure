@@ -296,8 +296,6 @@ Before deploying this infrastructure, ensure you have:
 ### **Required Tools**
 - **Terraform** >= 1.9.0 ([Download](https://terraform.io/downloads.html))
 - **Azure CLI** >= 2.50.0 ([Install Guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
-- **Python** >= 3.6 (for utility scripts)
-- **OpenSSL** (for SSL certificate generation)
 
 ### **Azure Requirements**
 - Valid Azure subscription with sufficient credits
@@ -370,17 +368,19 @@ Verify your subscription has sufficient quotas:
    - PostgreSQL administrator password  
    - SSL certificate password (if using custom certificates)
 
-### **Step 3: SSL Certificate Generation (Optional)**
+### **Step 3: SSL Certificate Setup**
 
-Generate self-signed certificates for testing:
+You must provide your own SSL certificate in PFX format. Place it in the `ssl_certs/` directory:
 
 ```bash
-# Set certificate password as environment variable
-export SSL_CERT_PASSWORD="YourCertificatePassword123!"
+# Ensure ssl_certs directory exists
+mkdir -p ssl_certs
 
-# Generate SSL certificate
-python generate_ssl_certificate.py --domain your-domain.com
+# Place your PFX certificate file (you must provide this)
+cp your-certificate.pfx ssl_certs/ssl_cert.pfx
 ```
+
+**📋 See `ssl_certs/README.md` for detailed certificate requirements and sources.**
 
 ### **Step 4: Terraform Deployment**
 
@@ -409,33 +409,24 @@ python generate_ssl_certificate.py --domain your-domain.com
      -var-file="configuration/terraform/secrets.tfvars"
    ```
 
-   **Deployment time:** ~45-60 minutes for complete infrastructure
+   **Deployment time:** ~10 minutes for complete infrastructure
 
-### **Step 5: Post-Deployment Verification**
+### **Step 5: Post-Deployment Configuration**
 
-1. **Verify infrastructure services:**
-   ```bash
-   python scripts/blob_storage_test.py
-   python scripts/postgresql_managed_identity_test.py
-   python scripts/azure_ai_search_test.py
-   python scripts/open_ai_test.py
-   ```
+After infrastructure deployment, configure PostgreSQL managed identity access by running the setup script on the hub VM (jump box):
 
-2. **Test network connectivity:**
-   ```bash
-   python scripts/diagnose_routing.py
-   ```
+```bash
+# SSH to hub VM
+ssh vmadmin@<hub-vm-ip>
 
-3. **Validate Application Gateway infrastructure:**
-   ```bash
-   python scripts/app_gateway_test.py
-   ```
+# Copy script to hub VM and set execute permissions
+chmod +x configuration/pgsql/init_pgsql_script.sh
 
-4. **Configure PostgreSQL managed identity access:**
-   ```bash
-   # Run from hub VM (jump box) - see configuration/pgsql/README.md
-   ./configuration/pgsql/init_pgsql_script.txt
-   ```
+# Run the PostgreSQL managed identity setup script
+./configuration/pgsql/init_pgsql_script.sh
+```
+
+See `configuration/pgsql/README.md` for detailed instructions and troubleshooting.
 
 ---
 
@@ -504,12 +495,14 @@ az monitor activity-log list --resource-group $(terraform output -raw spoke_api_
 
 **Check Private Endpoint Connectivity:**
 ```bash
-python scripts/diagnose_routing.py --verbose
+# Use Azure CLI or portal to verify private endpoint connectivity
+az network private-endpoint show --name <endpoint-name> --resource-group <rg-name>
 ```
 
 **PostgreSQL Connection Test:**
 ```bash
-python scripts/postgresql_managed_identity_test.py --test-connection
+# Test from hub VM using psql
+psql -h <postgresql-server>.postgres.database.azure.com -U <username> -d postgres
 ```
 
 ---
@@ -534,16 +527,16 @@ terraform destroy \
 
 ## Architecture Validation
 
-The infrastructure includes comprehensive testing scripts to validate infrastructure deployment and connectivity:
+The infrastructure can be validated using Azure CLI commands and portal monitoring:
 
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `blob_storage_test.py` | Validates Blob Storage infrastructure connectivity | `python scripts/blob_storage_test.py` |
-| `postgresql_managed_identity_test.py` | Tests PostgreSQL managed identity authentication | `python scripts/postgresql_managed_identity_test.py` |
-| `azure_ai_search_test.py` | Verifies AI Search service deployment | `python scripts/azure_ai_search_test.py` |
-| `open_ai_test.py` | Tests Azure OpenAI service availability | `python scripts/open_ai_test.py` |
-| `diagnose_routing.py` | Network connectivity and routing validation | `python scripts/diagnose_routing.py` |
-| `app_gateway_test.py` | Application Gateway infrastructure health check | `python scripts/app_gateway_test.py` |
+| Component | Validation Method | Usage |
+|-----------|------------------|-------|
+| **Blob Storage** | Azure CLI connectivity test | `az storage account show --name <storage-account>` |
+| **PostgreSQL** | Connection test from hub VM | `psql -h <server>.postgres.database.azure.com -U <user>` |
+| **AI Search** | Service status check | `az search service show --name <service-name>` |
+| **OpenAI** | Service availability | `az cognitiveservices account show --name <openai-name>` |
+| **Network Routing** | Route table verification | `az network route-table show --name <route-table>` |
+| **Application Gateway** | Health probe status | `az network application-gateway show --name <ag-name>` |
 
 ---
 

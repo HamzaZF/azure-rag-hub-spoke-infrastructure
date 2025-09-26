@@ -1,0 +1,15 @@
+# SSL Certificate Files - Never commit to version control
+*.pfx
+*.p12
+*.key
+*.crt
+*.csr
+*.pem
+
+# Certificate backups
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*.temp

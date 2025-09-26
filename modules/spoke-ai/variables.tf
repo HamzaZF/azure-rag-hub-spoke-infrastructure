@@ -313,7 +313,7 @@ variable "spoke_ai_container_apps_workload_profile_max_count" {
 variable "acr_webhook_scope" {
   description = "The scope for the ACR webhook (e.g., image:tag)."
   type        = string
-  default     = "kelix-audit-backend:*"
+  default     = "backend-app:*"
 }
 
 variable "acr_webhook_status" {

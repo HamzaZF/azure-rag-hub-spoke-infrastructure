@@ -102,7 +102,7 @@ variable "hub_openai_text_embedding_capacity" {
 variable "hub_openai_custom_subdomain_name" {
   description = "The custom subdomain name for the OpenAI cognitive account."
   type        = string
-  //default     = "kelix-ai"
+  //default     = "openai-subdomain"
 }
 
 # Random suffix configuration

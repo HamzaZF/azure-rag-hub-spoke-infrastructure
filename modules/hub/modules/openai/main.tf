@@ -4,7 +4,7 @@ module "naming" {
   suffix = [var.naming_region]
 }
 
-resource "azurerm_cognitive_account" "kelix-openai" {
+resource "azurerm_cognitive_account" "openai" {
   name                  = "${module.naming.cognitive_account.name}-${random_string.open_ai_suffix.result}"
   location              = var.hub_openai_location
   resource_group_name   = var.hub_openai_resource_group_name
@@ -24,7 +24,7 @@ resource "random_string" "open_ai_suffix" {
 # GPT-4.1 Mini for chat/conversation
 resource "azurerm_cognitive_deployment" "gpt-41-mini" {
   name                 = "gpt-4.1-mini"
-  cognitive_account_id = azurerm_cognitive_account.kelix-openai.id
+  cognitive_account_id = azurerm_cognitive_account.openai.id
 
   model {
     format  = "OpenAI"

@@ -65,7 +65,7 @@ resource "azurerm_linux_web_app" "app" {
     
     # Azure OpenAI (Hub) - Managed Identity Access
     # AZURE_OPENAI_ENDPOINT                     = "https://${var.hub_openai_service_name}.openai.azure.com"
-    # AZURE_OPENAI_ENDPOINT                     = "https://kelix-ai-test-001.openai.azure.com">
+    # AZURE_OPENAI_ENDPOINT                     = "https://your-openai-instance.openai.azure.com">
     AZURE_OPENAI_ENDPOINT                     = "https://${var.hub_openai_custom_subdomain_name}.openai.azure.com"
     AZURE_OPENAI_API_VERSION                  = var.azure_openai_api_version
     AZURE_CONVERSATION_MODEL_DEPLOYMENT_NAME  = var.azure_conversation_model_name

@@ -9,17 +9,17 @@
 # -----------------------------------------------------------------------------
 output "hub_blob_storage_account_name" {
   description = "The name of the Blob Storage account."
-  value       = azurerm_storage_account.kelix_storage_account_hub.name
+  value       = azurerm_storage_account.hub_storage_account.name
 }
 
 output "hub_blob_storage_account_id" {
   description = "The resource ID of the Blob Storage account."
-  value       = azurerm_storage_account.kelix_storage_account_hub.id
+  value       = azurerm_storage_account.hub_storage_account.id
 }
 
 output "hub_blob_storage_account_primary_connection_string" {
   description = "Primary connection string for the Blob Storage account."
-  value       = azurerm_storage_account.kelix_storage_account_hub.primary_connection_string
+  value       = azurerm_storage_account.hub_storage_account.primary_connection_string
 }
 
 # -----------------------------------------------------------------------------

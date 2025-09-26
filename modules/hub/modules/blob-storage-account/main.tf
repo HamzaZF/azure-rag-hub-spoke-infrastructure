@@ -16,7 +16,7 @@ module "naming" {
 # -----------------------------------------------------------------------------
 # Storage Account
 # -----------------------------------------------------------------------------
-resource "azurerm_storage_account" "kelix_storage_account_hub" {
+resource "azurerm_storage_account" "hub_storage_account" {
   name                         = "${module.naming.storage_account.name}${random_string.storage_suffix.result}"
   resource_group_name          = var.hub_blob_storage_resource_group_name
   location                     = var.hub_blob_storage_location
@@ -42,7 +42,7 @@ resource "random_string" "storage_suffix" {
 # -----------------------------------------------------------------------------
 resource "azurerm_storage_container" "container" {
   name                  = "${module.naming.storage_container.name}-${random_string.container_suffix.result}"
-  storage_account_id    = azurerm_storage_account.kelix_storage_account_hub.id
+  storage_account_id    = azurerm_storage_account.hub_storage_account.id
   container_access_type = "private"
 }
 

@@ -14,12 +14,12 @@ output "private_dns_zone_id" {
 
 output "private_endpoint_id" {
   description = "The ID of the blob storage private endpoint"
-  value       = azurerm_private_endpoint.kelix_storage_blob.id
+  value       = azurerm_private_endpoint.storage_blob.id
 }
 
 output "hub_pe_blob_storage_private_endpoint_ip" {
   description = "The private IP address of the Blob Storage private endpoint."
-  value       = azurerm_private_endpoint.kelix_storage_blob.private_service_connection[0].private_ip_address
+  value       = azurerm_private_endpoint.storage_blob.private_service_connection[0].private_ip_address
 }
 
 # -----------------------------------------------------------------------------

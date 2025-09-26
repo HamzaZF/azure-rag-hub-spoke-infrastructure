@@ -151,7 +151,7 @@ variable "spoke_api_frontend_sku_name" {
 variable "frontend_container_image_name" {
   description = "The name of the frontend container image to deploy."
   type        = string
-  default     = "kelix-audit-frontend:latest"
+  default     = "frontend-app:latest"
 }
 
 variable "frontend_node_env" {
@@ -216,7 +216,7 @@ variable "hub_postgresql_fqdn" {
 variable "backend_container_image_name" {
   description = "The name of the container image to deploy (e.g., myapp:latest)."
   type        = string
-  //default     = "kelix-audit-backend:latest"
+  //default     = "backend-app:latest"
 }
 
 variable "spoke_api_ag_waf_sku_name" {
@@ -244,7 +244,7 @@ variable "spoke_api_ag_frontend_port_http" {
 variable "spoke_api_ag_ssl_certificate_name" {
   description = "The name for the SSL certificate in Application Gateway."
   type        = string
-  default     = "kelix-api-ssl-cert"
+  default     = "api-gateway-ssl-cert"
 }
 
 variable "spoke_api_ag_ssl_certificate_path" {
@@ -300,7 +300,7 @@ variable "spoke_ai_vnet_address_space" {
 variable "acr_webhook_scope" {
   description = "The scope for the ACR webhook (e.g., image:tag)."
   type        = string
-  default     = "kelix-audit-backend:*"
+  default     = "backend-app:*"
 }
 
 variable "acr_webhook_status" {
@@ -451,7 +451,7 @@ variable "azure_email_connection_string" {
 variable "azure_email_sender" {
   description = "Azure Email sender address."
   type        = string
-  default     = "DoNotReply@kelix.ai"
+  default     = "noreply@example.com"
 }
 
 # Application Configuration
@@ -633,7 +633,7 @@ variable "default_password" {
 variable "frontend_domain" {
   description = "Frontend domain URL."
   type        = string
-  default     = "https://portal.kelix.ai/"
+  default     = "https://portal.example.com/"
 }
 
 # =============================================================================

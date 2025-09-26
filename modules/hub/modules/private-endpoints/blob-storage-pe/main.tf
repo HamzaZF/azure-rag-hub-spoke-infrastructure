@@ -16,7 +16,7 @@ module "naming" {
 # -----------------------------------------------------------------------------
 # Private Endpoint
 # -----------------------------------------------------------------------------
-resource "azurerm_private_endpoint" "kelix_storage_blob" {
+resource "azurerm_private_endpoint" "storage_blob" {
   name                = "${module.naming.private_endpoint.name}-${random_string.pe_suffix.result}"
   location            = var.hub_pe_blob_storage_location
   resource_group_name = var.hub_pe_blob_storage_resource_group_name

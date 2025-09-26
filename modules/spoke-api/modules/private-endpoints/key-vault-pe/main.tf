@@ -18,7 +18,7 @@ resource "azurerm_private_endpoint" "kv_pe" {
   subnet_id           = var.spoke_api_pe_key_vault_subnet_id
 
   private_service_connection {
-    name                           = "kelix-key-vault-psc"
+    name                           = "api-key-vault-psc"
     private_connection_resource_id = var.spoke_api_pe_key_vault_id
     subresource_names              = ["vault"]
     is_manual_connection           = false
